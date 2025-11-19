@@ -1,0 +1,65 @@
+      <% layout("layouts/boilerplate") -%>
+      <div class="row">
+        <div class="col-8 offset-2">
+    <h3>Edit your listing</h3>
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" enctype="multipart/form-data">
+
+      <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+         <input class="form-control"
+    name="listing[title]" 
+    value="<%= listing.title %>"  
+  />
+  
+      </div>
+ 
+      <div class="mb-3">
+          <label for="title" class="form-label">Description</label>
+        <textarea class="form-control" name="listing[description]"><%= listing.description %></textarea>
+
+      </div>
+  
+      <div class="mb-3">
+          <label for="title" class="form-label">Image (replace)</label>
+        <input class="form-control" type="file" name="image" accept="image/*" />
+        <% if (listing.image && listing.image.data) { %>
+          <div class="mt-2">
+            <img src="data:<%= listing.image.contentType %>;base64,<%= listing.image.data.toString('base64') %>" style="max-width:200px;" />
+          </div>
+        <% } %>
+      </div>
+  
+      <div class="mb-3">
+          <label for="title" class="form-label">Price</label>
+         <input class="form-control"
+    type="number" 
+    name="listing[price]" 
+    value="<%= listing.price %>"   
+  />
+      </div>
+ 
+      <div class="mb-3">
+        <label for="title" class="form-label">Country</label>
+  <input class="form-control"
+    type="text" 
+    name="listing[country]" 
+    value="<%= listing.country %>"   
+  />
+      </div>
+        
+      <div class="mb-3">
+        <label for="title" class="form-label">Location</label>
+  <input class="form-control"
+    type="text" 
+    name="listing[location]" 
+    value="<%= listing.location %>"   
+  />
+      </div>
+  
+  
+  <button type="submit" class="btn btn-dark mt-3">Edit</button>
+</form>
+    </div>
+        
+    </div>
+    
