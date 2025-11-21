@@ -49,11 +49,6 @@ process.on('uncaughtException', (err) => {
     console.error('Uncaught Exception:', err);
 });
 
-
-
-
-
-
 // Helper to build `listing` object from multipart/form-data fields
 const buildListingFromBody = (body) => {
     if (!body) return {};
@@ -66,21 +61,9 @@ const buildListingFromBody = (body) => {
     return listing;
 };
 
-main().then(() => {
-    console.log('Connected to MongoDB');
-}).catch(err => {
-    console.error('Error connecting to MongoDB:', err);
-});
-
-async function main() {
-    await mongoose.connect(MONGO_URL);
-}
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
-
-
 
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
@@ -89,17 +72,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
     res.render("listings/home.ejs");
 });
-//Index route to display all listings
 
+// Index route to display all listings
 app.get('/listings', async (req, res) => {
-const allListings = await Listing.find({});
-    res.render("listings/index.ejs", {allListings});
-    
-    
+    const allListings = await Listing.find({});
+    res.render("listings/index.ejs", { allListings });
 });
 
 // New route to display form for creating a new listing
-
 app.get('/listings/new', (req, res) => {
     res.render('listings/new.ejs');
 });
@@ -111,8 +91,8 @@ app.get('/listings/:id', async (req, res) => {
     res.render('listings/show.ejs', { listing });
 });
 
-//Create route to handle form submission and create a new listing
-app.post('/listings', upload.single('image'), wrapAsync( async (req, res) => {
+// Create route to handle form submission and create a new listing
+app.post('/listings', upload.single('image'), wrapAsync(async (req, res) => {
     console.log('POST /listings body:', req.body);
     console.log('POST /listings file present:', !!req.file);
     const data = buildListingFromBody(req.body || {});
@@ -128,14 +108,14 @@ app.post('/listings', upload.single('image'), wrapAsync( async (req, res) => {
     res.redirect(`/listings`);
 }));
 
-//Edit route to display form for editing an existing listing
+// Edit route to display form for editing an existing listing
 app.get('/listings/:id/edit', async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
     res.render('listings/edit.ejs', { listing });
 });
 
-//update route to handle form submission and update an existing listing
+// Update route to handle form submission and update an existing listing
 app.put('/listings/:id', upload.single('image'), async (req, res) => {
     let { id } = req.params;
     console.log('PUT /listings/:id body:', req.body);
@@ -152,11 +132,10 @@ app.put('/listings/:id', upload.single('image'), async (req, res) => {
     res.redirect(`/listings/${id}`);
 });
 
-
 // Delete route to handle deletion of a listing
 app.delete('/listings/:id', async (req, res) => {
     let { id } = req.params;
-    let deletedListing =  await Listing.findByIdAndDelete(id);
+    let deletedListing = await Listing.findByIdAndDelete(id);
     res.redirect('/listings');
 });
 
@@ -181,4 +160,3 @@ if (require.main === module) {
 }
 
 module.exports = app;
-
