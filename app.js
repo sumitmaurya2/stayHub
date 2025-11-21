@@ -12,19 +12,34 @@ const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 
-// yaha LOCAL fallback rakhenge, taki laptop pe mongosh use kar sako
-const MONGO_URL = process.env.MONGO_URL || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/wanderlust';
+// ------------ MONGO URL SETUP ------------
+
+// 1️⃣ Pehle env se lo (Vercel / .env se)
+let MONGO_URL = process.env.MONGO_URL || process.env.MONGODB_URI;
+
+// 2️⃣ Agar env nahi mila aur dev mode hai, tabhi localhost use karo
+if (!MONGO_URL) {
+    if (process.env.NODE_ENV !== 'production') {
+        MONGO_URL = 'mongodb://127.0.0.1:27017/wanderlust';
+        console.log('⚠️ No MONGO_URL/MONGODB_URI in env, using LOCAL MongoDB');
+    } else {
+        console.error('❌ No MONGO_URL/MONGODB_URI set in production!');
+        // production me bina DB ke app run karne ka koi sense nahi
+        process.exit(1);
+    }
+}
 
 // connection to mongodb
 async function startDb() {
     try {
+        console.log('🔌 Connecting to MongoDB:', MONGO_URL);
         await mongoose.connect(MONGO_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
-        console.log('Connected to MongoDB');
+        console.log('✅ Connected to MongoDB');
     } catch (err) {
-        console.error('Mongo connection error:', err);
+        console.error('❌ Mongo connection error:', err);
     }
 }
 
@@ -48,6 +63,8 @@ process.on('unhandledRejection', (reason, promise) => {
 process.on('uncaughtException', (err) => {
     console.error('Uncaught Exception:', err);
 });
+
+// ------------ yaha se tumhara baaki code same rahega ------------
 
 
 
@@ -181,4 +198,5 @@ if (require.main === module) {
 }
 
 module.exports = app;
+
 
