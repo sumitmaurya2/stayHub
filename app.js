@@ -44,13 +44,15 @@ app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-    res.send('Hello I am root');
+    res.render("listings/home.ejs");
 });
 //Index route to display all listings
 
 app.get('/listings', async (req, res) => {
 const allListings = await Listing.find({});
     res.render("listings/index.ejs", {allListings});
+    
+    
 });
 
 // New route to display form for creating a new listing

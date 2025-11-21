@@ -1,0 +1,17 @@
+# Express validator for form validation
+
+const {body, validationFun} = require("express-validator);
+
+var validationFun=[
+    body('username).nonEmpty().withMessage("Username is required"),
+
+    body('passward').isLength({min 5,max 15}).withMessage("Passward must be between 5 to 15 characters long")
+]
+
+# For using
+
+app.post('/saveform', validationFun, req res)=>{
+    const result = validationResult(req);
+    res.send(result);
+
+}

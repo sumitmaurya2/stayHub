@@ -3,13 +3,6 @@
         <div class="col-8 offset-2 mt-3 mb-3">
 
         <h3>Listing Details:</h3><br>
-        <% if (listing.image && listing.image.data) { %>
-            <img src="data:<%= listing.image.contentType %>;base64,<%= listing.image.data.toString('base64') %>" alt="" style="max-width:100%;" />
-        <% } else if (listing.image) { %>
-            <img src="<%= listing.image %>" alt="" style="max-width:100%;" />
-        <% } else { %>
-            <img src="/images/default.jpg" alt="" style="max-width:100%;" />
-        <% } %>
         <div class="card">
                 <img src="<% if (listing.image && listing.image.data) { %>data:<%= listing.image.contentType %>;base64,<%= listing.image.data.toString('base64') %><% } else { %><%= listing.image && listing.image.url ? listing.image.url : '/images/default.jpg' %><% } %>"
          class="card-img-top listing-link"
