@@ -1,4 +1,7 @@
-const  express = require('express');
+require("dotenv").config();          // ⬅ env variables load karo sabse pehle
+const wrapAsync = require('./utils/wrapAsync.js');
+
+const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const Listing = require('./models/listing.js');
@@ -8,8 +11,26 @@ const upload = multer({ storage });
 const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-const wrapAsync = require('./utils/wrapAsync.js');
+
+// yaha LOCAL fallback rakhenge, taki laptop pe mongosh use kar sako
+const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
+
+// connection to mongodb
+async function main() {
+  try {
+    await mongoose.connect(MONGO_URL);
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.error("Mongo connection error:", err);
+  }
+}
+
+main();
+
+
+
+
+
 
 // Helper to build `listing` object from multipart/form-data fields
 const buildListingFromBody = (body) => {
