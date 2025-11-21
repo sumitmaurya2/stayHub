@@ -30,6 +30,25 @@ async function startDb() {
 
 startDb();
 
+// Log mongoose connection events for debugging (useful on Vercel/logs)
+mongoose.connection.on('connected', () => {
+    console.log('Mongoose connected to', MONGO_URL);
+});
+mongoose.connection.on('error', (err) => {
+    console.error('Mongoose connection error:', err);
+});
+mongoose.connection.on('disconnected', () => {
+    console.warn('Mongoose disconnected');
+});
+
+// Capture unhandled rejections / exceptions so Vercel logs show details
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+});
+
 
 
 
@@ -142,8 +161,15 @@ app.delete('/listings/:id', async (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).send('Something went wrong: ' + (err && err.message ? err.message : err));
+    console.error('Express error handler:', err && err.stack ? err.stack : err);
+    const isProd = process.env.NODE_ENV === 'production';
+    const message = err && err.message ? err.message : 'Internal Server Error';
+    // In non-production, send stack for easier debugging. In production, send generic message.
+    if (!isProd && err && err.stack) {
+        res.status(500).send(`Error: ${message}\n\n${err.stack}`);
+    } else {
+        res.status(500).send('Something went wrong: ' + message);
+    }
 });
 
 // Only start server if this file is run directly. This allows importing `app` in serverless wrappers.
