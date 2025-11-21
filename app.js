@@ -13,19 +13,22 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 
 // yaha LOCAL fallback rakhenge, taki laptop pe mongosh use kar sako
-const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
+const MONGO_URL = process.env.MONGO_URL || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/wanderlust';
 
 // connection to mongodb
-async function main() {
-  try {
-    await mongoose.connect(MONGO_URL);
-    console.log("Connected to MongoDB");
-  } catch (err) {
-    console.error("Mongo connection error:", err);
-  }
+async function startDb() {
+    try {
+        await mongoose.connect(MONGO_URL, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('Connected to MongoDB');
+    } catch (err) {
+        console.error('Mongo connection error:', err);
+    }
 }
 
-main();
+startDb();
 
 
 
@@ -143,8 +146,13 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something went wrong: ' + (err && err.message ? err.message : err));
 });
 
+// Only start server if this file is run directly. This allows importing `app` in serverless wrappers.
+if (require.main === module) {
+    const PORT = process.env.PORT || 8080;
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
 
-app.listen(8080, () => {
-        console.log('Server is running on port 8080');
-});
+module.exports = app;
 
