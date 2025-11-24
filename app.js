@@ -5,6 +5,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const Listing = require('./models/listing.js');
+// const Login = require('./login');
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -18,18 +19,14 @@ const MONGO_URL = process.env.MONGO_URL || process.env.MONGODB_URI || 'mongodb:/
 // connection to mongodb
 async function startDb() {
     try {
-        await mongoose.connect(MONGO_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log('Connected to MongoDB');
+        await mongoose.connect(MONGO_URL);
+        console.log('✅ Connected to MongoDB');
     } catch (err) {
-        console.error('Mongo connection error:', err);
+        console.error('❌ MongoDB connection error:', err);
     }
 }
 
 startDb();
-
 // Log mongoose connection events for debugging (useful on Vercel/logs)
 mongoose.connection.on('connected', () => {
     console.log('Mongoose connected to', MONGO_URL);
@@ -72,6 +69,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
     res.render("listings/home.ejs");
 });
+
+
+
+
+app.get('/login', (req, res) => {
+    res.render("login");
+});
+
 
 // Index route to display all listings
 app.get('/listings', async (req, res) => {

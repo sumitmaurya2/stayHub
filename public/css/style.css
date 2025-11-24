@@ -81,6 +81,10 @@ body{
 .card-text p {
     font-weight: 400;
 }
+
+
+/* Home CSS */
+
 .listing-link{
     text-decoration: none;
 }
@@ -111,4 +115,40 @@ body{
 }
 .card-text{
     padding: 1rem;
+}
+
+.carousel-item img {
+    height: 400px;          /* Change height as you like */
+    object-fit: cover;      /* Makes images fill nicely */
+    padding-top: 20px ;
+    filter: blur(5px);
+
+  }
+.animate-text {
+  animation: fadeSlide 1s ease forwards;
+}
+
+@keyframes fadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Optional: beautify text */
+.carousel-caption h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.carousel-caption p {
+  font-size: 1.2rem;
+}
+.custom-nav {
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    background-color: #ffffff !important;
 }

@@ -1,39 +1,5 @@
 <% layout("/layouts/boilerplate") -%>
 
-<style>
-  .carousel-item img {
-    height: 400px;          /* Change height as you like */
-    object-fit: cover;      /* Makes images fill nicely */
-    padding-top: 20px ;
-    filter: blur(5px);
-
-  }
-.animate-text {
-  animation: fadeSlide 1s ease forwards;
-}
-
-@keyframes fadeSlide {
-  0% {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Optional: beautify text */
-.carousel-caption h2 {
-  font-size: 2.5rem;
-  font-weight: 600;
-}
-
-.carousel-caption p {
-  font-size: 1.2rem;
-}
-
-</style>
 
 <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
   <div class="carousel-inner">
@@ -41,26 +7,128 @@
     <div class="carousel-item active">
       <img src="/assets/banner1.jpg" class="d-block w-100" alt="Banner 1">
       <div class="carousel-caption animate-text">
-        <h2>Welcome to StayHub</h2>
-        <p>Your comfort is our priority</p>
+        <h1>Find Hotels, Resorts, PGs & Rooms</h1>
+        <p>All in One Place</p>
       </div>
     </div>
 
     <div class="carousel-item">
       <img src="/assets/banner2.jpg" class="d-block w-100" alt="Banner 2">
       <div class="carousel-caption animate-text">
-        <h2>Luxury Rooms</h2>
-        <p>Experience premium hospitality</p>
+        <h1>Find Your Perfect Stay</h1>
+        <p>Anytime Anywhere</p>
       </div>
     </div>
 
     <div class="carousel-item">
       <img src="/assets/banner3.jpg" class="d-block w-100" alt="Banner 3">
       <div class="carousel-caption animate-text">
-        <h2>Book With Ease</h2>
-        <p>Fast, secure & convenient booking</p>
+        <h1>From Hotels to Hotels</h1>
+        <p>We Bring You the Best</p>
       </div>
     </div>
 
   </div>
 </div>
+
+
+<!-- Tailwind Navbar -->
+
+
+
+
+<!-- Categories Section -->
+
+<h1 class="text-3xl font-medium text-slate-800 text-center mb-2 font-poppins mt-5">Popular Categories</h1>
+<p class="text-slate-600 mb-10 font-poppins text-center">Explore the latest additions to our collection.</p>
+<section class="flex flex-wrap items-center justify-center gap-6">
+    <a href="#" class='group w-56 text-center'>
+        <img class='rounded-lg w-full group-hover:shadow-xl hover:-translate-y-0.5 duration-300 transition-all h-72 object-cover object-top' src="/assets/rooms.jpg" alt="image">
+        <p class='text-xl'>Rooms</p>
+    </a>
+
+    <a href="#" class='group w-56 text-center'>
+        <img class='rounded-lg w-full group-hover:shadow-xl hover:-translate-y-0.5 duration-300 transition-all h-72 object-cover object-right' src="/assets/banner2.jpg" alt="image">
+        <p class='text-xl'>Hotels</p>
+    </a>
+
+    <a href="#" class='group w-56 text-center'>
+        <img class='rounded-lg w-full group-hover:shadow-xl hover:-translate-y-0.5 duration-300 transition-all h-72 object-cover object-right' src="/assets/pgs.jpg" alt="image">
+        <p class='text-xl'>PGs</p>
+    </a>
+
+    <a href="#" class='group w-56 text-center'>
+        <img class='rounded-lg w-full group-hover:shadow-xl hover:-translate-y-0.5 duration-300 transition-all h-72 object-cover object-right' src="/assets/appartments.jpg" alt="image">
+        <p class='text-xl'>Appartments</p>
+    </a>
+</section>
+
+
+
+
+<!-- USP Section -->
+
+
+<section class="py-12">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-10 px-4 md:px-6">
+    
+    <!-- Left image -->
+    <img
+      class="max-w-2xl w-full rounded-xl shadow-md object-cover"
+      src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+      alt="Modern apartment interior"
+    />
+
+    <!-- Right feature cards -->
+    <div class="space-y-6 px-0 md:px-0 w-full md:w-auto">
+      
+      <!-- Card 1: All stays in one place -->
+      <div class="flex items-center justify-center rounded-xl py-4 pr-4 pl-2 gap-6 max-w-md bg-violet-100 border border-violet-200">
+        <div class="p-4 rounded-xl bg-white/70">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7F22FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7l9-4 9 4v6a9 9 0 0 1-18 0z"/>
+            <path d="M9 22V12h6v10"/>
+          </svg>
+        </div>
+        <div class="space-y-2">
+          <h3 class="text-base font-semibold text-slate-700">All Stays in One Place</h3>
+          <p class="text-sm text-slate-600">
+            Rooms, PGs, hostels, resorts and apartments — everything available on one platform.
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 2: Affordable prices -->
+      <div class="flex items-center justify-center rounded-xl py-4 pr-4 pl-2 gap-6 max-w-md border border-emerald-100 bg-emerald-50/40">
+        <div class="p-4 rounded-xl bg-white/70">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00A63E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+          </svg>
+        </div>
+        <div class="space-y-2">
+          <h3 class="text-base font-semibold text-slate-700">Affordable Prices</h3>
+          <p class="text-sm text-slate-600">
+            Get the best stays at budget-friendly rates with no hidden charges.
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 3: Secure payments -->
+      <div class="flex items-center justify-center rounded-xl py-4 pr-4 pl-2 gap-6 max-w-md border border-orange-100 bg-orange-50/40">
+        <div class="p-4 rounded-xl bg-white/70">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F54900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 10v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10z"/>
+            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+          </svg>
+        </div>
+        <div class="space-y-2">
+          <h3 class="text-base font-semibold text-slate-700">Secure Payments</h3>
+          <p class="text-sm text-slate-600">
+            Book safely through encrypted and trusted payment gateways.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

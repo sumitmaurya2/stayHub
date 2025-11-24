@@ -1,17 +1,67 @@
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse mt-3
-" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="/listings">All Listings</a>
-        <a class="nav-link" href="/listings/new">Add New Listing</a>
-       
-      </div>
+
+
+<!-- Tailwind Navbar -->
+
+
+<nav class="flex items-center justify-between px-4 py-3 border-b border-gray-300 bg-white relative sticky top-0 z-50">
+
+    <div class="flex items-center gap-2 flex-1">
+        <a href="/">
+            <img src="/assets/logo.png" alt="Spot4Stay" class="h-10 w-auto fill-blue-600">
+
+        </a>
+
+        <!-- ✅ mobile search bar -->
+        <div class="sm:hidden flex items-center flex-1 border border-gray-300 rounded-full px-3">
+            <input class="py-1 w-full bg-transparent outline-none text-sm" type="text" placeholder="Search..." />
+        </div>
     </div>
-  </div>
+
+    <button aria-label="Menu" id="menu-toggle" class="sm:hidden ml-3">
+        <svg width="21" height="15" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="21" height="1.5" rx=".75" fill="#426287"/>
+            <rect x="8" y="6" width="13" height="1.5" rx=".75" fill="#426287"/>
+            <rect x="6" y="13" width="15" height="1.5" rx=".75" fill="#426287"/>
+        </svg>
+    </button>
+
+    <div id="mobile-menu" class="hidden absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden z-50 max-h-screen overflow-y-auto
+">
+        <a href="/" class="block">Home</a>
+        <a href="/listings" class="block">All Listings</a>
+        <a href="/listings/new" class="block">Add New Listing</a>
+        
+        <button  onclick="window.location.href='/login'" class="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm">
+            Login
+        </button>
+    </div>
+
+    <div class="hidden sm:flex items-center gap-8">
+        <a href="/">Home</a>
+        <a href="/listings">All Listings</a>
+        <a href="/listings/new">Add New Listing</a>
+
+        <div class="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
+            <input class="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search Here..." />
+           
+        </div>
+
+    
+        <a  onclick="window.location.href='/login'" class="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full inline-block">
+    Login
+</a>
+
+    </div>
 </nav>
+
+<script>
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+        const menu = document.getElementById("mobile-menu");
+        if (menu.classList.contains("hidden")) {
+            menu.classList.remove("hidden");
+            menu.classList.add("flex");
+        } else {
+            menu.classList.add("hidden");
+        }
+    });
+</script>
