@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Spot4Stay</title>
+
+    <!-- Tailwind via CDN (fine for development) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase SDKs (compat for simple client-side usage like login/signup) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gray-100">
+
+<div class="flex w-full max-w-5xl bg-white shadow-lg rounded-2xl overflow-hidden">
+    <div class="w-2/5 hidden md:block">
+        <img class="h-full w-full object-cover" src="/assets/rooms.jpg" alt="Rooms">
+    </div>
+
+    <div class="w-full md:w-3/5 flex flex-col items-center justify-center p-8">
+
+        <form id="signupForm" class="md:w-96 w-80 flex flex-col items-center justify-center">
+            <h2 class="text-4xl text-gray-900 font-medium">Create account</h2>
+            <p class="text-sm text-gray-500/90 mt-3">Create your account to get started</p>
+
+            <!-- Error Message Display -->
+            <p id="errorMessage" class="text-red-500 text-sm mt-2 hidden"></p>
+
+            <!-- Name (optional) -->
+            <div class="flex items-center mt-6 w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
+                <input type="text" id="nameInput" name="name" placeholder="Full name (optional)" class="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full">
+            </div>
+
+            <!-- Email -->
+            <div class="flex items-center mt-6 w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
+                <input type="email" id="emailInput" name="email" placeholder="Email id" class="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full" required>
+            </div>
+
+            <!-- Password -->
+            <div class="flex items-center mt-6 w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
+                <input type="password" id="passwordInput" name="password" placeholder="Password" class="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full" required>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" id="signupButton" class="mt-8 w-full h-11 rounded-full text-white bg-indigo-500 hover:opacity-90 transition-opacity">Sign up</button>
+
+            <p class="text-gray-500/90 text-sm mt-4">Already have an account? <a class="text-indigo-400 hover:underline" href="/login">Login</a></p>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Firebase project configuration pulled from server-side env (same pattern as login.ejs)
+    const firebaseConfig = {
+        apiKey: "<%= process.env.FIREBASE_API_KEY %>",
+        authDomain: "<%= process.env.FIREBASE_AUTH_DOMAIN %>",
+        projectId: "<%= process.env.FIREBASE_PROJECT_ID %>",
+        storageBucket: "<%= process.env.FIREBASE_STORAGE_BUCKET %>",
+        messagingSenderId: "<%= process.env.FIREBASE_MESSAGING_SENDER_ID %>",
+        appId: "<%= process.env.FIREBASE_APP_ID %>"
+    };
+
+    // Initialize Firebase (compat)
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const signupForm = document.getElementById('signupForm');
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const nameInput = document.getElementById('nameInput');
+    const errorMessage = document.getElementById('errorMessage');
+
+    function showError(msg) {
+        errorMessage.textContent = msg;
+        errorMessage.classList.remove('hidden');
+    }
+    function hideError() {
+        errorMessage.classList.add('hidden');
+        errorMessage.textContent = '';
+    }
+
+    // Redirect if already logged in
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            window.location.href = '/';
+        }
+    });
+
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideError();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        const displayName = nameInput.value.trim();
+
+        if (!email || !password) {
+            showError('Please provide email and password.');
+            return;
+        }
+
+        try {
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+            // Optionally set display name
+            if (displayName) {
+                await user.updateProfile({ displayName });
+            }
+            // On success redirect to home
+            window.location.href = '/';
+        } catch (err) {
+            console.error('Signup error:', err);
+            let msg = 'An error occurred while creating the account.';
+            if (err.code === 'auth/email-already-in-use') msg = 'Email already in use.';
+            else if (err.code === 'auth/weak-password') msg = 'Password is too weak (min 6 characters).';
+            else if (err.code === 'auth/invalid-email') msg = 'Invalid email address.';
+            showError(msg);
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -91,6 +91,11 @@ app.get('/login', (req, res) => {
     res.render("login");
 });
 
+// Signup page - renders signup form which uses Firebase client-side auth
+app.get('/signup', (req, res) => {
+    res.render('signup');
+});
+
 
 // Index route to display all listings
 app.get('/listings', async (req, res) => {

@@ -112,7 +112,7 @@
 
                 <p class="text-gray-500/90 text-sm mt-4">
                     Don’t have an account?
-                    <a class="text-indigo-400 hover:underline" href="/signup.html">Sign up</a> <!-- Assuming signup.html -->
+                    <a class="text-indigo-400 hover:underline" href="/signup">Sign up</a>
                 </p>
             </form>
         </div>
@@ -132,7 +132,7 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+    const auth = firebase.auth();
 
         const emailInput = document.getElementById('emailInput');
         const passwordInput = document.getElementById('passwordInput');
@@ -158,7 +158,7 @@
             if (user) {
                 // User is signed in, redirect to home page
                 console.log("User already signed in:", user);
-                window.location.href = '/home'; // Redirect to your home page
+                window.location.href = '/'; // Redirect to your home page
             } else {
                 // No user is signed in.
                 console.log("No user signed in. Showing login form.");
@@ -201,7 +201,7 @@
             try {
                 const result = await auth.signInWithPopup(provider);
                 console.log("Google Sign-in successful:", result.user);
-                window.location.href = '/home'; // Redirect to your home page
+                window.location.href = '/'; // Redirect to your home page
             } catch (error) {
                 console.error("Error during Google sign-in:", error);
                 let message = "An error occurred during Google sign-in.";
