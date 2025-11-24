@@ -13,8 +13,22 @@ const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 
-// yaha LOCAL fallback rakhenge, taki laptop pe mongosh use kar sako
-const MONGO_URL = process.env.MONGO_URL || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/wanderlust';
+// ------------ MONGO URL SETUP ------------
+
+// 1️⃣ Pehle env se lo (Vercel / .env se)
+let MONGO_URL = process.env.MONGO_URL || process.env.MONGODB_URI;
+
+// 2️⃣ Agar env nahi mila aur dev mode hai, tabhi localhost use karo
+if (!MONGO_URL) {
+    if (process.env.NODE_ENV !== 'production') {
+        MONGO_URL = 'mongodb://127.0.0.1:27017/wanderlust';
+        console.log('⚠️ No MONGO_URL/MONGODB_URI in env, using LOCAL MongoDB');
+    } else {
+        console.error('❌ No MONGO_URL/MONGODB_URI set in production!');
+        // production me bina DB ke app run karne ka koi sense nahi
+        process.exit(1);
+    }
+}
 
 // connection to mongodb
 async function startDb() {
