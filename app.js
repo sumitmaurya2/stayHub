@@ -13,6 +13,11 @@ const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 
+
+app.get("/signup", (req, res) => {
+  res.render("signup");
+});
+
 // ------------ MONGO URL SETUP ------------
 
 // 1️⃣ Pehle env se lo (Vercel / .env se)

@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.86.0",
     "bootstrap": "^5.3.8",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",

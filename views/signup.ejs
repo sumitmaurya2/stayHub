@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - Spot4Stay</title>
+  <title>Sign Up - Spot4Stay</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -21,10 +21,10 @@
 
     <!-- Right Form -->
     <div class="w-full md:w-1/2 flex items-center justify-center px-8 py-10">
-      <form id="login-form" class="w-full max-w-sm">
-        <h2 class="text-3xl font-semibold text-gray-900 text-center">Sign in</h2>
+      <form id="signup-form" class="w-full max-w-sm">
+        <h2 class="text-3xl font-semibold text-gray-900 text-center">Create Account</h2>
         <p class="mt-2 text-sm text-gray-500 text-center">
-          Welcome back! Please sign in to continue
+          Join us to explore amazing listings!
         </p>
 
         <!-- Google Button -->
@@ -43,7 +43,7 @@
         <!-- Divider -->
         <div class="flex items-center gap-3 w-full my-6">
           <div class="flex-1 h-px bg-gray-300"></div>
-          <p class="text-xs text-gray-500 whitespace-nowrap">or sign in with email</p>
+          <p class="text-xs text-gray-500 whitespace-nowrap">or sign up with email</p>
           <div class="flex-1 h-px bg-gray-300"></div>
         </div>
 
@@ -62,32 +62,23 @@
         <input
           id="password"
           type="password"
-          placeholder="Enter your password"
+          placeholder="Create a password"
           class="w-full border border-gray-300 h-11 rounded-full px-4 text-sm outline-none"
           required
         />
 
-        <!-- Remember + Forgot -->
-        <div class="flex items-center justify-between mt-4 text-gray-600 text-xs">
-          <label class="flex items-center gap-2">
-            <input type="checkbox" class="h-4 w-4" />
-            Remember me
-          </label>
-          <a href="#" class="text-indigo-500 hover:underline">Forgot password?</a>
-        </div>
-
-        <!-- Login Button -->
+        <!-- Sign Up Button -->
         <button
           type="submit"
           class="mt-6 w-full h-11 rounded-full text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 transition"
         >
-          Login
+          Sign Up
         </button>
 
-        <!-- Sign Up Link -->
+        <!-- Already have account -->
         <p class="mt-4 text-xs text-center text-gray-500">
-          Don’t have an account?
-          <a href="#" class="text-indigo-500 hover:underline">Sign up</a>
+          Already have an account?
+          <a href="/login" class="text-indigo-500 hover:underline">Log in</a>
         </p>
       </form>
     </div>
@@ -96,52 +87,40 @@
   <!-- Supabase + Auth Logic -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // 🔑 Your Supabase project details
     const supabaseUrl = "https://dopnzkxzdtuztxhhiouj.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcG56a3h6ZHR1enR4aGhpb3VqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMDM4ODUsImV4cCI6MjA3OTY3OTg4NX0._Lw0JIlolpPtNnDCT_5eQSuD7tQmsZ8t86O-70czas4";
 
-    // ✅ Correct way to create client with CDN v2
     const { createClient } = supabase;
     const sb = createClient(supabaseUrl, supabaseAnonKey);
 
-    // 👉 Continue with Google
-    document.getElementById("google-btn").addEventListener("click", async () => {
-      const { data, error } = await sb.auth.signInWithOAuth({
-        provider: "google",
-        // change this to whatever URL you want AFTER login
-        // for local dev: "http://localhost:3000/dashboard"
-        // make sure this URL is allowed in Supabase → Auth → URL config
-        options: {
-          redirectTo: "http://localhost:8080/listings"
-        }
-      });
-
-      if (error) {
-        console.error("Google login error:", error.message);
-        alert(error.message);
-      }
-    });
-
-    // 👉 Email + Password login
-    document.getElementById("login-form").addEventListener("submit", async (e) => {
-      e.preventDefault(); // stop normal form submit
+    // 👉 Email + Password Sign Up
+    document.getElementById("signup-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      const { data, error } = await sb.auth.signInWithPassword({
+      const { data, error } = await sb.auth.signUp({
         email,
         password,
       });
 
       if (error) {
-        console.error("Email login error:", error.message);
         alert(error.message);
       } else {
-        alert("Logged in successfully!");
-        // redirect after login
-        redirectTo: "http://localhost:8080/listings"
+        alert("Account created! Redirecting...");
+        window.location.href = "http://localhost:3000/listings";
       }
+    });
+
+    // 👉 Google Sign Up / Login
+    document.getElementById("google-btn").addEventListener("click", async () => {
+      await sb.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "http://localhost:3000/listings"
+        }
+      });
     });
   </script>
 </body>
