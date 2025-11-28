@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta-name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - Spot4Stay</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -96,51 +96,45 @@
   <!-- Supabase + Auth Logic -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // 🔑 Your Supabase project details
+    // 🔑 Supabase credentials
     const supabaseUrl = "https://dopnzkxzdtuztxhhiouj.supabase.co";
-    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcG56a3h6ZHR1enR4aGhpb3VqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMDM4ODUsImV4cCI6MjA3OTY3OTg4NX0._Lw0JIlolpPtNnDCT_5eQSuD7tQmsZ8t86O-70czas4";
+    const supabaseAnonKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcG56a3h6ZHR1enR4aGhpb3VqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMDM4ODUsImV4cCI6MjA3OTY3OTg4NX0._Lw0JIlolpPtNnDCT_5eQSuD7tQmsZ8t86O-70czas4";
 
-    // ✅ Correct way to create client with CDN v2
     const { createClient } = supabase;
     const sb = createClient(supabaseUrl, supabaseAnonKey);
 
+    const redirectURL = "https://stay-hub-topaz.vercel.app/listings";
+
     // 👉 Continue with Google
     document.getElementById("google-btn").addEventListener("click", async () => {
-      const { data, error } = await sb.auth.signInWithOAuth({
+      const { error } = await sb.auth.signInWithOAuth({
         provider: "google",
-        // change this to whatever URL you want AFTER login
-        // for local dev: "http://localhost:3000/dashboard"
-        // make sure this URL is allowed in Supabase → Auth → URL config
         options: {
-          redirectTo: "http://localhost:8080/listings"
+          redirectTo: redirectURL
         }
       });
 
       if (error) {
-        console.error("Google login error:", error.message);
         alert(error.message);
+        console.error(error);
       }
     });
 
     // 👉 Email + Password login
     document.getElementById("login-form").addEventListener("submit", async (e) => {
-      e.preventDefault(); // stop normal form submit
+      e.preventDefault();
 
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      const { data, error } = await sb.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { error } = await sb.auth.signInWithPassword({ email, password });
 
       if (error) {
-        console.error("Email login error:", error.message);
         alert(error.message);
+        console.error(error);
       } else {
-        alert("Logged in successfully!");
-        // redirect after login
-        redirectTo: "http://localhost:8080/listings"
+        window.location.href = redirectURL;
       }
     });
   </script>
